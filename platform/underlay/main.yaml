@@ -5,7 +5,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./platform-underlay/0-operators
+  path: ./platform/underlay/0-operators
   prune: true
   wait: true
   sourceRef:
@@ -24,7 +24,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./platform-underlay/1-base
+  path: ./platform/underlay/1-base
   dependsOn:
     - name: operators
   prune: true
@@ -45,7 +45,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./platform-underlay/2-core
+  path: ./platform/underlay/2-core
   dependsOn:
     - name: base
   prune: true
@@ -66,7 +66,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./platform-underlay/3-shims
+  path: ./platform/underlay/3-shims
   dependsOn:
     - name: core
   prune: true
@@ -87,7 +87,7 @@ metadata:
   namespace: flux-system
 spec:
   interval: 10m0s
-  path: ./platform-underlay/4-databases
+  path: ./platform/underlay/4-databases
   dependsOn:
     - name: shims
   prune: true
