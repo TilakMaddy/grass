@@ -1,0 +1,101 @@
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: operators
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./platform-underlay/0-operators
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: base
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./platform-underlay/1-base
+  dependsOn:
+    - name: operators
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: core
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./platform-underlay/2-core
+  dependsOn:
+    - name: base
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: shims
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./platform-underlay/3-shims
+  dependsOn:
+    - name: core
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: databases
+  namespace: flux-system
+spec:
+  interval: 10m0s
+  path: ./platform-underlay/4-databases
+  dependsOn:
+    - name: shims
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
