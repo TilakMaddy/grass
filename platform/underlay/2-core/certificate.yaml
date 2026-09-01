@@ -15,6 +15,6 @@ spec:
     - '*.${CLUSTER_ZONE}'
     - '${CLUSTER_ZONE}'
   issuerRef:
-    name: cluster-issuer
+    name: cluster-issuer-${ACME_ENV}
     kind: ClusterIssuer
     group: cert-manager.io
