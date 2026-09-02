@@ -1,10 +1,10 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: cluster-certificate
+  name: zone-certificate
   namespace: ${PLATFORM_NAMESPACE}
 spec:
-  secretName: cluster-certificate-key
+  secretName: zone-certificate-tls
   secretTemplate:
     labels:
       cnpg.io/reload: ""

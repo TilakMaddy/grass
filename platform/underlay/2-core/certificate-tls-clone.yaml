@@ -1,7 +1,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRole
 metadata:
-  name: kyverno:background-controller:cluster-certificate-key
+  name: kyverno:background-controller:zone-certificate-tls
   labels:
     rbac.kyverno.io/aggregate-to-background-controller: "true"
 rules:
@@ -13,19 +13,19 @@ rules:
 apiVersion: kyverno.io/v1
 kind: ClusterPolicy
 metadata:
-  name: cluster-certificate-key-clone
+  name: zone-certificate-tls-clone
 spec:
   generateExisting: true
   webhookConfiguration:
     failurePolicy: Fail
     matchConditions:
-      - name: cluster-certificate-key-namespaces-only
+      - name: zone-certificate-tls-namespaces-only
         expression: >-
           object != null && has(object.metadata.labels) &&
-          'oatlabs.oatmilk.work/cluster-certificate-key' in object.metadata.labels &&
-          object.metadata.labels['oatlabs.oatmilk.work/cluster-certificate-key'] == 'true'
+          'oatlabs.oatmilk.work/zone-certificate-tls' in object.metadata.labels &&
+          object.metadata.labels['oatlabs.oatmilk.work/zone-certificate-tls'] == 'true'
   rules:
-    - name: clone-cluster-certificate-key
+    - name: clone-zone-certificate-tls
       match:
         any:
           - resources:
@@ -33,13 +33,13 @@ spec:
                 - Namespace
               selector:
                 matchLabels:
-                  oatlabs.oatmilk.work/cluster-certificate-key: "true"
+                  oatlabs.oatmilk.work/zone-certificate-tls: "true"
       generate:
         apiVersion: v1
         kind: Secret
-        name: cluster-certificate-key
+        name: zone-certificate-tls
         namespace: "{{ request.object.metadata.name }}"
         synchronize: true
         clone:
           namespace: ${PLATFORM_NAMESPACE}
-          name: cluster-certificate-key
+          name: zone-certificate-tls
