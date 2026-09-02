@@ -2,13 +2,19 @@ apiVersion: gateway.networking.k8s.io/v1
 kind: Gateway
 metadata:
   name: gateway
-  namespace: default
+  namespace: ${PLATFORM_NAMESPACE}
 spec:
   gatewayClassName: envoy-gateway-class
   listeners:
     - name: postgres-direct
       protocol: TLS
       port: 5432
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              oatlabs.oatmilk.work/gateway-access: "true"
       tls:
         mode: Passthrough
 
@@ -17,7 +23,7 @@ apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
 metadata:
   name: allow-proxy
-  namespace: default
+  namespace: ${PLATFORM_NAMESPACE}
 spec:
   targetRefs:
     - group: gateway.networking.k8s.io

@@ -1,0 +1,45 @@
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: kyverno:background-controller:cluster-certificate-key
+  labels:
+    rbac.kyverno.io/aggregate-to-background-controller: "true"
+rules:
+  - apiGroups: [""]
+    resources: ["secrets"]
+    verbs: ["get", "list", "watch", "create", "update", "delete"]
+
+---
+apiVersion: kyverno.io/v1
+kind: ClusterPolicy
+metadata:
+  name: cluster-certificate-key-clone
+spec:
+  generateExisting: true
+  webhookConfiguration:
+    failurePolicy: Fail
+    matchConditions:
+      - name: cluster-certificate-key-namespaces-only
+        expression: >-
+          object != null && has(object.metadata.labels) &&
+          'oatlabs.oatmilk.work/cluster-certificate-key' in object.metadata.labels &&
+          object.metadata.labels['oatlabs.oatmilk.work/cluster-certificate-key'] == 'true'
+  rules:
+    - name: clone-cluster-certificate-key
+      match:
+        any:
+          - resources:
+              kinds:
+                - Namespace
+              selector:
+                matchLabels:
+                  oatlabs.oatmilk.work/cluster-certificate-key: "true"
+      generate:
+        apiVersion: v1
+        kind: Secret
+        name: cluster-certificate-key
+        namespace: "{{ request.object.metadata.name }}"
+        synchronize: true
+        clone:
+          namespace: ${PLATFORM_NAMESPACE}
+          name: cluster-certificate-key

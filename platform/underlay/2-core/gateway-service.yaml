@@ -6,7 +6,7 @@ metadata:
 spec:
   selector:
     gateway.envoyproxy.io/owning-gateway-name: gateway
-    gateway.envoyproxy.io/owning-gateway-namespace: default
+    gateway.envoyproxy.io/owning-gateway-namespace: ${PLATFORM_NAMESPACE}
   ports:
     - name: postgres
       port: 5432

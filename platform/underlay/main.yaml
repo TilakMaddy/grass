@@ -54,6 +54,8 @@ spec:
     kind: GitRepository
     name: ${PLATFORM_SOURCE}
   postBuild:
+    substitute:
+      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
     substituteFrom:
       - kind: ConfigMap
         name: ${CLUSTER_CONFIG}
@@ -75,6 +77,8 @@ spec:
     kind: GitRepository
     name: ${PLATFORM_SOURCE}
   postBuild:
+    substitute:
+      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
     substituteFrom:
       - kind: ConfigMap
         name: ${CLUSTER_CONFIG}
