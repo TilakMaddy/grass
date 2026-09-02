@@ -54,6 +54,6 @@ spec:
     extraArgs:
       - --annotation-filter=oatlabs.oatmilk.work/external-dns=true
       - --cloudflare-dns-records-per-page=5000
-      # - --exclude-target-net=10.0.0.0/8
-      # - --exclude-target-net=172.16.0.0/12
-      # - --exclude-target-net=192.168.0.0/16
+      - --exclude-target-net=10.0.0.0/8
+      - --exclude-target-net=172.16.0.0/12
+      - --exclude-target-net=192.168.0.0/16
