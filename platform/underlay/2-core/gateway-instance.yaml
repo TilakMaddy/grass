@@ -18,6 +18,24 @@ spec:
       tls:
         mode: Passthrough
 
+    - name: web-https
+      protocol: HTTPS
+      port: 443
+      hostname: '*.${CLUSTER_ZONE}'
+      allowedRoutes:
+        namespaces:
+          from: Selector
+          selector:
+            matchLabels:
+              oatlabs.oatmilk.work/gateway-access: "true"
+        kinds:
+          - kind: HTTPRoute
+      tls:
+        mode: Terminate
+        certificateRefs:
+          - kind: Secret
+            name: zone-certificate-tls
+
 ---
 apiVersion: gateway.envoyproxy.io/v1alpha1
 kind: ClientTrafficPolicy
@@ -31,4 +49,3 @@ spec:
       name: gateway
   proxyProtocol:
     optional: true
-

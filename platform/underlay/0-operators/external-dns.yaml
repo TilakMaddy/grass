@@ -48,6 +48,7 @@ spec:
             key: api-token
     sources:
       - gateway-tlsroute
+      - gateway-httproute
 
     policy: upsert-only
     txtOwnerId: ${CLUSTER_NAME}
