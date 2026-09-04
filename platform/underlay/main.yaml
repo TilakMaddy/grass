@@ -4,7 +4,9 @@ metadata:
   name: operators
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/underlay/0-operators
   prune: true
   wait: true
@@ -23,7 +25,9 @@ metadata:
   name: base
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/underlay/1-base
   dependsOn:
     - name: operators
@@ -44,7 +48,9 @@ metadata:
   name: core
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/underlay/2-core
   dependsOn:
     - name: base
@@ -67,7 +73,9 @@ metadata:
   name: shims
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/underlay/3-shims
   dependsOn:
     - name: core

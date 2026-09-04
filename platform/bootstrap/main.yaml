@@ -12,7 +12,9 @@ metadata:
   name: secrets
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/secrets
   prune: true
   wait: true
@@ -25,6 +27,9 @@ spec:
       PLATFORM_SOURCE: ${PLATFORM_SOURCE}
       PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
       PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -33,7 +38,9 @@ metadata:
   name: platform
   namespace: flux-system
 spec:
-  interval: 10m0s
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
   path: ${PLATFORM_PATH_PREFIX:=.}/platform/underlay
   dependsOn:
     - name: secrets
@@ -48,3 +55,6 @@ spec:
       PLATFORM_SOURCE: ${PLATFORM_SOURCE}
       PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
       PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
