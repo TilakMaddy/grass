@@ -4,6 +4,17 @@ metadata:
   name: prometheus-system
 
 ---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: grafana-alertmanager-auth
+  namespace: prometheus-system
+type: Opaque
+stringData:
+  username: ${GRAFANA_ADMIN_USER}
+  password: ${GRAFANA_ADMIN_PASSWORD}
+
+---
 apiVersion: source.toolkit.fluxcd.io/v1
 kind: HelmRepository
 metadata:
@@ -91,6 +102,23 @@ spec:
       prometheusSpec:
         retention: 14d
         retentionSize: 8GB
+
+        alerting:
+          alertmanagers:
+            - namespace: grafana-system
+              name: grafana-service
+              port:
+                name: grafana
+              scheme: http
+              apiVersion: v2
+              pathPrefix: /api/alertmanager/grafana
+              basicAuth:
+                username:
+                  name: grafana-alertmanager-auth
+                  key: username
+                password:
+                  name: grafana-alertmanager-auth
+                  key: password
 
         # Left nil the operator selects only CRs carrying this chart's own
         # release label, which excludes every monitor declared outside it.

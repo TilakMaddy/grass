@@ -10,8 +10,8 @@ spec:
     server:
       root_url: https://grafana.${CLUSTER_ZONE}
     security:
-      admin_user: admin
-      admin_password: pass123
+      admin_user: ${GRAFANA_ADMIN_USER}
+      admin_password: ${GRAFANA_ADMIN_PASSWORD}
       cookie_secure: "true"
     auth.anonymous:
       enabled: "false"
@@ -27,8 +27,17 @@ spec:
       from_address: ${GRAFANA_SMTP_FROM_ADDRESS}
       from_name: Grafana
       startTLS_policy: MandatoryStartTLS
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 5Gi
   deployment:
     spec:
+      strategy:
+        type: Recreate
       template:
         spec:
           nodeSelector:
