@@ -40,6 +40,10 @@ spec:
         type: Recreate
       template:
         spec:
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
           nodeSelector:
             node-role.kubernetes.io/observability: ""
           tolerations:
