@@ -17,3 +17,21 @@ spec:
     - backendRefs:
         - name: grafana-service
           port: 3000
+
+---
+apiVersion: gateway.envoyproxy.io/v1alpha1
+kind: BackendTrafficPolicy
+metadata:
+  name: grafana-no-tracing
+  namespace: grafana-system
+spec:
+  targetRefs:
+    - group: gateway.networking.k8s.io
+      kind: HTTPRoute
+      name: grafana-route
+  telemetry:
+    tracing:
+      samplingFraction:
+        numerator: 0
+      overallSamplingFraction:
+        numerator: 0
