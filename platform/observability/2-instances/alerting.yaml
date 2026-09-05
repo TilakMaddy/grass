@@ -77,3 +77,16 @@ spec:
           - [severity, =, info]
         mute_time_intervals:
           - always
+
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaFolder
+metadata:
+  name: platform
+  namespace: grafana-system
+spec:
+  title: Platform
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  allowCrossNamespaceImport: true

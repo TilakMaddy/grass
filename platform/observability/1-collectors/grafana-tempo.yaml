@@ -77,6 +77,19 @@ spec:
             http:
               endpoint: 0.0.0.0:4318
 
+      # local-blocks serves TraceQL metrics (rate/quantile_over_time) from Tempo
+      # itself; without it every aggregate query fails with "empty ring".
+      metricsGenerator:
+        enabled: true
+        remoteWriteUrl: http://kube-prometheus-stack-prometheus.prometheus-system.svc.cluster.local:9090/api/v1/write
+        processor:
+          local_blocks:
+            flush_to_storage: true
+        storage:
+          path: /var/tempo/generator/wal
+        traces_storage:
+          path: /var/tempo/generator/traces
+
       # Tempo has no size-based retention, so a span storm would fill the
       # volume before the 336h window is reached and stall ingestion.
       overrides:
@@ -88,6 +101,9 @@ spec:
             max_traces_per_user: 10000
           global:
             max_bytes_per_trace: 1500000
+          metrics_generator:
+            processors:
+              - local-blocks
 
       resources:
         requests:
