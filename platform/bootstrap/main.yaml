@@ -22,15 +22,9 @@ spec:
     kind: GitRepository
     name: ${PLATFORM_SOURCE}
   postBuild:
-    substitute:
-      PLATFORM_SOURCE: ${PLATFORM_SOURCE}
-      PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
-      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
-      CLUSTER_CONFIG: ${CLUSTER_CONFIG}
-      CLUSTER_SECRET_CONFIG: ${CLUSTER_SECRET_CONFIG}
-      FLUX_INTERVAL: ${FLUX_INTERVAL}
-      FLUX_RETRY_INTERVAL: ${FLUX_RETRY_INTERVAL}
-      FLUX_TIMEOUT: ${FLUX_TIMEOUT}
+    substituteFrom:
+      - kind: ConfigMap
+        name: platform-vars
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -51,15 +45,9 @@ spec:
     kind: GitRepository
     name: ${PLATFORM_SOURCE}
   postBuild:
-    substitute:
-      PLATFORM_SOURCE: ${PLATFORM_SOURCE}
-      PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
-      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
-      CLUSTER_CONFIG: ${CLUSTER_CONFIG}
-      CLUSTER_SECRET_CONFIG: ${CLUSTER_SECRET_CONFIG}
-      FLUX_INTERVAL: ${FLUX_INTERVAL}
-      FLUX_RETRY_INTERVAL: ${FLUX_RETRY_INTERVAL}
-      FLUX_TIMEOUT: ${FLUX_TIMEOUT}
+    substituteFrom:
+      - kind: ConfigMap
+        name: platform-vars
 
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
@@ -80,12 +68,6 @@ spec:
     kind: GitRepository
     name: ${PLATFORM_SOURCE}
   postBuild:
-    substitute:
-      PLATFORM_SOURCE: ${PLATFORM_SOURCE}
-      PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
-      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
-      CLUSTER_CONFIG: ${CLUSTER_CONFIG}
-      CLUSTER_SECRET_CONFIG: ${CLUSTER_SECRET_CONFIG}
-      FLUX_INTERVAL: ${FLUX_INTERVAL}
-      FLUX_RETRY_INTERVAL: ${FLUX_RETRY_INTERVAL}
-      FLUX_TIMEOUT: ${FLUX_TIMEOUT}
+    substituteFrom:
+      - kind: ConfigMap
+        name: platform-vars
