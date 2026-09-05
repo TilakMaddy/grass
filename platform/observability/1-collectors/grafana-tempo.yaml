@@ -48,6 +48,14 @@ spec:
       reportingEnabled: false
       retention: 336h
 
+      # A ballast inflates Go's perceived heap so the GC runs later; at the
+      # chart default of 1024 it lets the heap pass the container limit and
+      # the kernel OOM-kills tempo. GOMEMLIMIT collects before that instead.
+      memBallastSizeMbs: 0
+      extraEnv:
+        - name: GOMEMLIMIT
+          value: 800MiB
+
       storage:
         trace:
           backend: local
