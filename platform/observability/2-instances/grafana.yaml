@@ -35,6 +35,9 @@ spec:
         requests:
           storage: 5Gi
   deployment:
+    metadata:
+      annotations:
+        reloader.stakater.com/auto: "true"
     spec:
       strategy:
         type: Recreate

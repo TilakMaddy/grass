@@ -39,6 +39,8 @@ spec:
       retries: 3
   interval: 5m
   values:
+    deploymentAnnotations:
+      reloader.stakater.com/auto: "true"
     provider: cloudflare
     env:
       - name: CF_API_TOKEN
