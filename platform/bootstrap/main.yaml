@@ -58,3 +58,32 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: ${CLUSTER_CONFIG}
+
+---
+apiVersion: kustomize.toolkit.fluxcd.io/v1
+kind: Kustomization
+metadata:
+  name: observability
+  namespace: flux-system
+spec:
+  interval: ${FLUX_INTERVAL}
+  retryInterval: ${FLUX_RETRY_INTERVAL}
+  timeout: ${FLUX_TIMEOUT}
+  path: ${PLATFORM_PATH_PREFIX:=.}/platform/observability
+  dependsOn:
+    - name: platform
+  prune: true
+  wait: true
+  sourceRef:
+    kind: GitRepository
+    name: ${PLATFORM_SOURCE}
+  postBuild:
+    substitute:
+      CLUSTER_CONFIG: ${CLUSTER_CONFIG}
+      CLUSTER_SECRET_CONFIG: ${CLUSTER_SECRET_CONFIG}
+      PLATFORM_SOURCE: ${PLATFORM_SOURCE}
+      PLATFORM_PATH_PREFIX: ${PLATFORM_PATH_PREFIX}
+      PLATFORM_NAMESPACE: ${PLATFORM_NAMESPACE}
+    substituteFrom:
+      - kind: ConfigMap
+        name: ${CLUSTER_CONFIG}
