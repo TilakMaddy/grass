@@ -54,6 +54,7 @@ directly. Every key below is required.
 | `FLUX_INTERVAL`, `FLUX_RETRY_INTERVAL`, `FLUX_TIMEOUT` | applied to every Kustomization the package creates |
 | `GRAFANA_SMTP_HOST`, `GRAFANA_SMTP_USER`, `GRAFANA_SMTP_FROM_ADDRESS` | alert delivery |
 | `ALERT_EMAIL_TO` | contact point address |
+| `GRAFANA_ALLOWED_CIDRS` | client CIDRs allowed to reach the Grafana route, as a YAML flow sequence, e.g. `'["0.0.0.0/0"]'`; everything else is denied at the gateway |
 | `OP_VAULT` | 1Password vault name |
 | `OP_VAULT_CLOUDFLARE_TOKEN` | `<item>/[section/]<field>` — DNS-01 and external-dns |
 | `OP_VAULT_GRAFANA_ADMIN_USER`, `OP_VAULT_GRAFANA_ADMIN_PASSWORD` | Grafana login |
