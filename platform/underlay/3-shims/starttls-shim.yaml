@@ -16,8 +16,6 @@ spec:
         app: pg-starttls
     spec:
       terminationGracePeriodSeconds: 30
-      imagePullSecrets:
-        - name: ghcr-pull-secret
       nodeSelector:
         node-role.kubernetes.io/general: ""
       topologySpreadConstraints:

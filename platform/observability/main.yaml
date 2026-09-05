@@ -65,3 +65,5 @@ spec:
     substituteFrom:
       - kind: ConfigMap
         name: ${CLUSTER_CONFIG}
+      - kind: Secret
+        name: ${CLUSTER_SECRET_CONFIG}

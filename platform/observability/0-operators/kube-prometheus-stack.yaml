@@ -4,15 +4,26 @@ metadata:
   name: prometheus-system
 
 ---
-apiVersion: v1
-kind: Secret
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
 metadata:
   name: grafana-alertmanager-auth
   namespace: prometheus-system
-type: Opaque
-stringData:
-  username: ${GRAFANA_ADMIN_USER}
-  password: ${GRAFANA_ADMIN_PASSWORD}
+spec:
+  refreshInterval: 1h
+  secretStoreRef:
+    kind: ClusterSecretStore
+    name: onepassword
+  target:
+    name: grafana-alertmanager-auth
+    creationPolicy: Owner
+  data:
+    - secretKey: username
+      remoteRef:
+        key: ${OP_VAULT_GRAFANA_ADMIN_USER}
+    - secretKey: password
+      remoteRef:
+        key: ${OP_VAULT_GRAFANA_ADMIN_PASSWORD}
 
 ---
 apiVersion: source.toolkit.fluxcd.io/v1
